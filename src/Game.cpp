@@ -2118,6 +2118,23 @@ void Game::handleKeyInput(SDL_KeyboardEvent& keyboardEvent) {
             }
         } break;
 
+        case SDLK_c: {
+            //set object to capture
+            if(currentCursorMode != CursorMode_Capture) {
+                std::set<Uint32>::iterator iter;
+                for(iter = selectedList.begin(); iter != selectedList.end(); ++iter) {
+
+                    ObjectBase* tempObject = objectManager.getObject(*iter);
+                    if(tempObject->isAUnit() && (tempObject->getOwner() == pLocalHouse)
+                        && tempObject->isRespondable() && tempObject->canAttack() && tempObject->isInfantry()) {
+
+                        currentCursorMode = CursorMode_Capture;
+                        break;
+                    }
+                }
+            }
+        } break;
+
         case SDLK_a: {
             //set object to attack
             if(currentCursorMode != CursorMode_Attack) {
