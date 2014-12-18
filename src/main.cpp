@@ -458,40 +458,7 @@ int main(int argc, char *argv[]) {
             }
         }
 
-		INIFile myINIFile(configfilepath);
-
-		settings.general.playIntro = myINIFile.getBoolValue("General","Play Intro",false);
-		settings.general.playerName = myINIFile.getStringValue("General","Player Name","Player");
-		settings.video.width = myINIFile.getIntValue("Video","Width",640);
-		settings.video.height = myINIFile.getIntValue("Video","Height",480);
-		settings.video.fullscreen = myINIFile.getBoolValue("Video","Fullscreen",true);
-		settings.video.doubleBuffering = myINIFile.getBoolValue("Video","Double Buffering",true);
-		settings.video.frameLimit = myINIFile.getBoolValue("Video","FrameLimit",true);
-		settings.video.preferredZoomLevel = myINIFile.getIntValue("Video","Preferred Zoom Level", 0);
-		settings.video.scaler = myINIFile.getStringValue("Video","Scaler", "scale2x");
-		settings.audio.musicType = myINIFile.getStringValue("Audio","Music Type","adl");
-		settings.audio.playMusic = myINIFile.getBoolValue("Audio","Play Music", true);
-		settings.audio.playSFX = myINIFile.getBoolValue("Audio","Play SFX", true);
-		settings.audio.frequency = myINIFile.getIntValue("Audio","Audio Frequency", 22050);
-
-		settings.general.language = myINIFile.getStringValue("General","Language","en");
-
-		settings.network.serverPort = myINIFile.getIntValue("Network","ServerPort",DEFAULT_PORT);
-		settings.network.metaServer = myINIFile.getStringValue("Network","MetaServer",DEFAULT_METASERVER);
-		settings.network.debugNetwork = myINIFile.getBoolValue("Network","Debug Network",false);
-
-		settings.ai.campaignAI = myINIFile.getStringValue("AI","Campaign AI",DEFAULTAIPLAYERCLASS);
-
-        settings.gameOptions.gameSpeed = myINIFile.getIntValue("Game Options","Game Speed",GAMESPEED_DEFAULT);
-        settings.gameOptions.concreteRequired = myINIFile.getBoolValue("Game Options","Concrete Required",true);
-		settings.gameOptions.structuresDegradeOnConcrete = myINIFile.getBoolValue("Game Options","Structures Degrade On Concrete",true);
-        settings.gameOptions.fogOfWar = myINIFile.getBoolValue("Game Options","Fog of War",false);
-        settings.gameOptions.startWithExploredMap = myINIFile.getBoolValue("Game Options","Start with Explored Map",false);
-        settings.gameOptions.instantBuild = myINIFile.getBoolValue("Game Options","Instant Build",false);
-        settings.gameOptions.onlyOnePalace = myINIFile.getBoolValue("Game Options","Only One Palace",false);
-        settings.gameOptions.rocketTurretsNeedPower = myINIFile.getBoolValue("Game Options","Rocket-Turrets Need Power",false);
-        settings.gameOptions.sandwormsRespawn = myINIFile.getBoolValue("Game Options","Sandworms Respawn",false);
-        settings.gameOptions.killedSandwormsDropSpice = myINIFile.getBoolValue("Game Options","Killed Sandworms Drop Spice",false);
+        settings.load(configfilepath);
 
         fprintf(stdout, "loading texts....."); fflush(stdout);
         pTextManager = new TextManager();
@@ -539,12 +506,7 @@ int main(int argc, char *argv[]) {
                 settings.video.width = 800;
                 settings.video.height = 600;
                 settings.video.preferredZoomLevel = 1;
-
-                myINIFile.setIntValue("Video","Width",settings.video.width);
-                myINIFile.setIntValue("Video","Height",settings.video.height);
-                myINIFile.setIntValue("Video","Preferred Zoom Level",1);
-
-                myINIFile.saveChangesTo(getConfigFilepath());
+                settings.save(configfilepath);
             }
 		}
 

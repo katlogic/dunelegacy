@@ -236,6 +236,7 @@ void Game::initGame(const GameInitSettings& newGameInitSettings) {
             }
 
             gamespeed = gameInitSettings.getGameOptions().gameSpeed;
+            screenborder->setScrollSpeed(gameInitSettings.getGameOptions().scrollSpeed);
 
             INIMapLoader* pINIMapLoader = new INIMapLoader(this, gameInitSettings.getFilename(), gameInitSettings.getFiledata());
             delete pINIMapLoader;

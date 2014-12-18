@@ -22,6 +22,7 @@
 #include <FileClasses/GFXManager.h>
 #include <FileClasses/TextManager.h>
 #include <FileClasses/music/MusicPlayer.h>
+#include <main.h>
 #include <Game.h>
 #include <House.h>
 #include <SoundPlayer.h>
@@ -121,7 +122,7 @@ void InGameSettingsMenu::init() {
 	previousVolume = volume = soundPlayer->getSfxVolume();
 	volumeBar.setProgress((100.0*volume)/MIX_MAX_VOLUME);
 
-    scrollSpeed = screenborder->getScrollSpeed();
+        scrollSpeed = screenborder->getScrollSpeed();
 	scrollSpeedBar.setProgress((scrollSpeed-2.0)*2.0);
 }
 
@@ -158,7 +159,11 @@ void InGameSettingsMenu::onCancel() {
 
 void InGameSettingsMenu::onOK() {
 	currentGame->gamespeed = newGamespeed;
-    screenborder->setScrollSpeed(scrollSpeed);
+        screenborder->setScrollSpeed(scrollSpeed);
+
+        // bleh
+	settings.gameOptions.scrollSpeed = scrollSpeed;
+        settings.save(getConfigFilepath());
 
 	Window* pParentWindow = dynamic_cast<Window*>(getParent());
 	if(pParentWindow != NULL) {

@@ -346,40 +346,7 @@ void OptionsMenu::onGameOptions() {
 }
 
 void OptionsMenu::saveConfiguration2File() {
-	INIFile myINIFile(getConfigFilepath());
-
-	myINIFile.setBoolValue("General","Play Intro",settings.general.playIntro);
-
-	myINIFile.setIntValue("Video","Width",settings.video.width);
-	myINIFile.setIntValue("Video","Height",settings.video.height);
-	myINIFile.setBoolValue("Video","Fullscreen",settings.video.fullscreen);
-	myINIFile.setBoolValue("Video","Double Buffering",settings.video.doubleBuffering);
-	myINIFile.setIntValue("Video","Preferred Zoom Level",settings.video.preferredZoomLevel);
-	myINIFile.setStringValue("Video","Scaler",settings.video.scaler);
-
-	myINIFile.setStringValue("General","Player Name",settings.general.playerName);
-	myINIFile.setStringValue("General","Language",settings.general.language);
-
-    myINIFile.setStringValue("AI","Campaign AI",settings.ai.campaignAI);
-
-	myINIFile.setBoolValue("Audio","Play SFX",settings.audio.playSFX);
-	myINIFile.setBoolValue("Audio","Play Music",settings.audio.playMusic);
-
-    myINIFile.setIntValue("Game Options","Game Speed",settings.gameOptions.gameSpeed);
-	myINIFile.setBoolValue("Game Options","Concrete Required",settings.gameOptions.concreteRequired);
-    myINIFile.setBoolValue("Game Options","Structures Degrade On Concrete",settings.gameOptions.structuresDegradeOnConcrete);
-    myINIFile.setBoolValue("Game Options","Fog of War",settings.gameOptions.fogOfWar);
-    myINIFile.setBoolValue("Game Options","Start with Explored Map",settings.gameOptions.startWithExploredMap);
-    myINIFile.setBoolValue("Game Options","Instant Build",settings.gameOptions.instantBuild);
-    myINIFile.setBoolValue("Game Options","Only One Palace",settings.gameOptions.onlyOnePalace);
-    myINIFile.setBoolValue("Game Options","Rocket-Turrets Need Power",settings.gameOptions.rocketTurretsNeedPower);
-    myINIFile.setBoolValue("Game Options","Sandworms Respawn",settings.gameOptions.sandwormsRespawn);
-    myINIFile.setBoolValue("Game Options","Killed Sandworms Drop Spice",settings.gameOptions.killedSandwormsDropSpice);
-
-    myINIFile.setIntValue("Network","ServerPort",settings.network.serverPort);
-    myINIFile.setStringValue("Network","MetaServer",settings.network.metaServer);
-
-	myINIFile.saveChangesTo(getConfigFilepath());
+    settings.save(getConfigFilepath());
 }
 
 void OptionsMenu::determineAvailableScreenResolutions() {

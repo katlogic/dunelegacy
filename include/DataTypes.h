@@ -24,6 +24,7 @@
 #include <SDL.h>
 #include <string>
 
+#include <FileClasses/INIFile.h>
 
 class Coord {
 public:
@@ -188,7 +189,7 @@ public:
 	class GameOptionsClass {
     public:
         GameOptionsClass()
-         : gameSpeed(GAMESPEED_DEFAULT), concreteRequired(true), structuresDegradeOnConcrete(true), fogOfWar(false),
+         : gameSpeed(GAMESPEED_DEFAULT),scrollSpeed(SCROLLSPEED_DEFAULT), concreteRequired(true), structuresDegradeOnConcrete(true), fogOfWar(false),
            startWithExploredMap(false), instantBuild(false), onlyOnePalace(false), rocketTurretsNeedPower(false),
            sandwormsRespawn(false), killedSandwormsDropSpice(false) {
         }
@@ -196,6 +197,7 @@ public:
 
         bool operator==(const GameOptionsClass& goc) const {
             return (gameSpeed == goc.gameSpeed)
+                    && (scrollSpeed == goc.scrollSpeed)
                     && (concreteRequired == goc.concreteRequired)
                     && (structuresDegradeOnConcrete == goc.structuresDegradeOnConcrete)
                     && (fogOfWar == goc.fogOfWar)
@@ -212,6 +214,7 @@ public:
         }
 
         int         gameSpeed;
+        int         scrollSpeed;
         bool		concreteRequired;
 		bool        structuresDegradeOnConcrete;
 		bool        fogOfWar;
@@ -222,6 +225,80 @@ public:
         bool        sandwormsRespawn;
 		bool        killedSandwormsDropSpice;
 	} gameOptions;
+    void load(std::string path) {
+        INIFile myINIFile(path);
+
+        general.playIntro = myINIFile.getBoolValue("General","Play Intro",false);
+        general.playerName = myINIFile.getStringValue("General","Player Name","Player");
+        video.width = myINIFile.getIntValue("Video","Width",640);
+        video.height = myINIFile.getIntValue("Video","Height",480);
+        video.fullscreen = myINIFile.getBoolValue("Video","Fullscreen",true);
+        video.doubleBuffering = myINIFile.getBoolValue("Video","Double Buffering",true);
+        video.frameLimit = myINIFile.getBoolValue("Video","FrameLimit",true);
+        video.preferredZoomLevel = myINIFile.getIntValue("Video","Preferred Zoom Level", 0);
+        video.scaler = myINIFile.getStringValue("Video","Scaler", "scale2x");
+        audio.musicType = myINIFile.getStringValue("Audio","Music Type","adl");
+        audio.playMusic = myINIFile.getBoolValue("Audio","Play Music", true);
+        audio.playSFX = myINIFile.getBoolValue("Audio","Play SFX", true);
+        audio.frequency = myINIFile.getIntValue("Audio","Audio Frequency", 22050);
+
+        general.language = myINIFile.getStringValue("General","Language","en");
+
+        network.serverPort = myINIFile.getIntValue("Network","ServerPort",DEFAULT_PORT);
+        network.metaServer = myINIFile.getStringValue("Network","MetaServer",DEFAULT_METASERVER);
+        network.debugNetwork = myINIFile.getBoolValue("Network","Debug Network",false);
+
+        ai.campaignAI = myINIFile.getStringValue("AI","Campaign AI",DEFAULTAIPLAYERCLASS);
+
+        gameOptions.gameSpeed = myINIFile.getIntValue("Game Options","Game Speed",GAMESPEED_DEFAULT);
+        gameOptions.scrollSpeed = myINIFile.getIntValue("Game Options","Scroll Speed",SCROLLSPEED_DEFAULT);
+        gameOptions.concreteRequired = myINIFile.getBoolValue("Game Options","Concrete Required",true);
+        gameOptions.structuresDegradeOnConcrete = myINIFile.getBoolValue("Game Options","Structures Degrade On Concrete",true);
+        gameOptions.fogOfWar = myINIFile.getBoolValue("Game Options","Fog of War",false);
+        gameOptions.startWithExploredMap = myINIFile.getBoolValue("Game Options","Start with Explored Map",false);
+        gameOptions.instantBuild = myINIFile.getBoolValue("Game Options","Instant Build",false);
+        gameOptions.onlyOnePalace = myINIFile.getBoolValue("Game Options","Only One Palace",false);
+        gameOptions.rocketTurretsNeedPower = myINIFile.getBoolValue("Game Options","Rocket-Turrets Need Power",false);
+        gameOptions.sandwormsRespawn = myINIFile.getBoolValue("Game Options","Sandworms Respawn",false);
+        gameOptions.killedSandwormsDropSpice = myINIFile.getBoolValue("Game Options","Killed Sandworms Drop Spice",false);        
+    }
+    void save(std::string path) {
+        INIFile myINIFile(path);
+
+        myINIFile.setBoolValue("General","Play Intro",general.playIntro);
+
+        myINIFile.setIntValue("Video","Width",video.width);
+        myINIFile.setIntValue("Video","Height",video.height);
+        myINIFile.setBoolValue("Video","Fullscreen",video.fullscreen);
+        myINIFile.setBoolValue("Video","Double Buffering",video.doubleBuffering);
+        myINIFile.setIntValue("Video","Preferred Zoom Level",video.preferredZoomLevel);
+        myINIFile.setStringValue("Video","Scaler",video.scaler);
+
+        myINIFile.setStringValue("General","Player Name",general.playerName);
+        myINIFile.setStringValue("General","Language",general.language);
+
+        myINIFile.setStringValue("AI","Campaign AI",ai.campaignAI);
+
+        myINIFile.setBoolValue("Audio","Play SFX",audio.playSFX);
+        myINIFile.setBoolValue("Audio","Play Music",audio.playMusic);
+
+        myINIFile.setIntValue("Game Options","Game Speed",gameOptions.gameSpeed);
+        myINIFile.setIntValue("Game Options","Scroll Speed",gameOptions.scrollSpeed);
+        myINIFile.setBoolValue("Game Options","Concrete Required",gameOptions.concreteRequired);
+        myINIFile.setBoolValue("Game Options","Structures Degrade On Concrete",gameOptions.structuresDegradeOnConcrete);
+        myINIFile.setBoolValue("Game Options","Fog of War",gameOptions.fogOfWar);
+        myINIFile.setBoolValue("Game Options","Start with Explored Map",gameOptions.startWithExploredMap);
+        myINIFile.setBoolValue("Game Options","Instant Build",gameOptions.instantBuild);
+        myINIFile.setBoolValue("Game Options","Only One Palace",gameOptions.onlyOnePalace);
+        myINIFile.setBoolValue("Game Options","Rocket-Turrets Need Power",gameOptions.rocketTurretsNeedPower);
+        myINIFile.setBoolValue("Game Options","Sandworms Respawn",gameOptions.sandwormsRespawn);
+        myINIFile.setBoolValue("Game Options","Killed Sandworms Drop Spice",gameOptions.killedSandwormsDropSpice);
+
+        myINIFile.setIntValue("Network","ServerPort",network.serverPort);
+        myINIFile.setStringValue("Network","MetaServer",network.metaServer);
+
+        myINIFile.saveChangesTo(path);
+    }
 };
 
 typedef enum
