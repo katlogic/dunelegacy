@@ -13,9 +13,7 @@ EXTRA_DIST = include \
              debian/dirs \
              debian/docs \
              debian/rules \
-             data/LEGACY.PAK \
-             data/OPENSD2.PAK \
-             data/Dune2-Versions.txt \
+             $(wildcard data/*.*) \
              data/maps \
              data/locale \
              Doxyfile \
@@ -43,10 +41,7 @@ EXTRA_DIST = include \
              updatelocale.sh \
              resource.rc
 
-datafiles_DATA = data/LEGACY.PAK \
-				 data/OPENSD2.PAK \
-                 data/Dune2-Versions.txt
-
+datafiles_DATA = $(wildcard data/*.*)
 datafilesdir = $(dunelegacydatadir)
 
 install-data-local:
