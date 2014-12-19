@@ -804,6 +804,9 @@ void UnitBase::doAttackPos(int xPos, int yPos, bool bForced) {
 }
 
 void UnitBase::doAttackObject(const ObjectBase* pTargetObject, bool bForced) {
+        if (pTargetObject == NULL) {
+	  return;
+        }
 	if(pTargetObject->getObjectID() == getObjectID() || (!canAttack() && getItemID() != Unit_Harvester)) {
 		return;
 	}
