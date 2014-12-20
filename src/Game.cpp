@@ -2015,6 +2015,10 @@ void Game::handleChatInput(SDL_KeyboardEvent& keyboardEvent) {
 
 
 void Game::handleKeyInput(SDL_KeyboardEvent& keyboardEvent) {
+    char tmp[FILENAME_MAX];
+    fnkdat("save/quicksave.dls", tmp, FILENAME_MAX, FNKDAT_USER | FNKDAT_CREAT);
+    std::string savepath(tmp);
+
     switch(keyboardEvent.keysym.sym) {
 
         case SDLK_0: {
@@ -2158,7 +2162,7 @@ void Game::handleKeyInput(SDL_KeyboardEvent& keyboardEvent) {
             }
         } break;
 
-        case SDLK_t: {
+         case SDLK_t: {
             bShowTime = !bShowTime;
         } break;
 
@@ -2187,6 +2191,13 @@ void Game::handleKeyInput(SDL_KeyboardEvent& keyboardEvent) {
             screenborder->setNewScreenCenter(oldCenterCoord);
         } break;
 
+        case SDLK_F4: {
+            // skip a 10 seconds
+            if(gameType != GAMETYPE_CUSTOM_MULTIPLAYER || bReplay) {
+                skipToGameCycle = gameCycleCount + (10*1000)/GAMESPEED_DEFAULT;
+            }
+        } break;
+
         case SDLK_F5: {
             // skip a 30 seconds
             if(gameType != GAMETYPE_CUSTOM_MULTIPLAYER || bReplay) {
@@ -2200,6 +2211,28 @@ void Game::handleKeyInput(SDL_KeyboardEvent& keyboardEvent) {
                 skipToGameCycle = gameCycleCount + (120*1000)/GAMESPEED_DEFAULT;
             }
         } break;
+
+        case SDLK_F7: {
+            // quicksave
+            if(gameType != GAMETYPE_CUSTOM_MULTIPLAYER || bReplay) {
+                currentGame->saveGame(savepath);
+                currentGame->addToNewsTicker(_("Game quick saved"));
+            }
+        } break;
+
+        case SDLK_F8: {
+            // quickload
+            if(gameType != GAMETYPE_CUSTOM_MULTIPLAYER || bReplay) {
+                try {
+                  currentGame->setNextGameInitSettings(GameInitSettings(savepath));
+                  currentGame->quitGame();
+                } catch (std::exception& e) {
+                  currentGame->addToNewsTicker(_("No quick save to load"));
+                  // no quicksave yet
+                }
+            }
+        } break;
+
 
         case SDLK_F10: {
             soundPlayer->toggleSound();
