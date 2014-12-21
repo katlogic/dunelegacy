@@ -2353,6 +2353,15 @@ void Game::handleKeyInput(SDL_KeyboardEvent& keyboardEvent) {
             }
         } break;
 
+        case SDLK_x: {
+		RobustList<StructureBase*>::const_iterator structureIterator;
+		for(structureIterator = structureList.begin(); structureIterator != structureList.end(); ++structureIterator) {
+			StructureBase* pStructure = *structureIterator;
+			if(pStructure->getOwner() == pLocalHouse)
+                                pStructure->handleRepairClick();
+		}
+        } break;
+
         case SDLK_RETURN: {
             if(SDL_GetModState() & KMOD_ALT) {
                 SDL_WM_ToggleFullScreen(screen);
