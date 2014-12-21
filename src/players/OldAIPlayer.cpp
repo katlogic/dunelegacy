@@ -134,7 +134,7 @@ void OldAIPlayer::update() {
                                         Uint32 itemID = NONE;
                                         if(getHouse()->getProducedPower() < 50 && pBuilder->isAvailableToBuild(Structure_WindTrap)) {
                                             itemID = Structure_WindTrap;
-                                        } else if(getHouse()->getNumItems(Structure_Refinery) < 2 && pBuilder->isAvailableToBuild(Structure_Refinery)) {
+                                        } else if(getHouse()->getNumItems(Structure_Refinery) < (3+difficulty) && pBuilder->isAvailableToBuild(Structure_Refinery)) {
                                             itemID = Structure_Refinery;
                                         } else if(getHouse()->getProducedPower() < 150 && pBuilder->isAvailableToBuild(Structure_WindTrap)) {
                                             itemID = Structure_WindTrap;
@@ -263,7 +263,7 @@ void OldAIPlayer::update() {
                         case Structure_HeavyFactory: {
                             if((getHouse()->getCredits() > 600) && (pBuilder->getProductionQueueSize() < 1) && (pBuilder->getBuildListSize() > 0)) {
 
-                                if(getHouse()->getNumItems(Unit_Harvester) < 2*getHouse()->getNumItems(Structure_Refinery)) {
+                                if(getHouse()->getNumItems(Unit_Harvester) < 4*getHouse()->getNumItems(Structure_Refinery)/3) {
                                     doProduceItem(pBuilder, Unit_Harvester);
                                 } else {
                                     doBuildRandom(pBuilder);
@@ -306,7 +306,7 @@ void OldAIPlayer::update() {
 
 		buildTimer = ((2-difficulty) * MILLI2CYCLES(1000)) + getRandomGen().rand(300, 400) * (  getHouse()->getNumItems(Structure_HeavyFactory)
                                                                                                 + getHouse()->getNumItems(Structure_LightFactory)
-                                                                                                + getHouse()->getNumItems(Structure_WOR) );
+                                                                                                + getHouse()->getNumItems(Structure_WOR) + getHouse()->getNumItems(Structure_Refinery));
 
 	}
 
