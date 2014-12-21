@@ -328,8 +328,11 @@ bool Sandworm::update() {
 	if(getHealth() <= getMaxHealth()/2) {
 
         if(currentGame->getGameInitSettings().getGameOptions().killedSandwormsDropSpice) {
-            currentGameMap->createSpiceField(location, 2);
-		}
+            // create spice field only if there is none left on the map
+            Coord dummy;
+            if (!currentGameMap->findSpice(dummy, location))
+              currentGameMap->createSpiceField(location, currentGame->randomGen.rand(4, 8), true);
+	}
 
 		if(sleepOrDie() == false) {
             return false;
