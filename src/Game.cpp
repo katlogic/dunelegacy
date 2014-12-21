@@ -73,6 +73,7 @@ Game::Game() {
 	finished = false;
 	bPause = false;
 	bMenu = false;
+        skipped = 0;
 	won = false;
 
 	gameType = GAMETYPE_CAMPAIGN;
@@ -258,6 +259,8 @@ void Game::initGame(const GameInitSettings& newGameInitSettings) {
         } break;
     }
     screenborder->setScrollSpeed(settings.gameOptions.scrollSpeed);
+    soundPlayer->setSfxVolume(settings.gameOptions.volume);
+    musicPlayer->setMusicVolume(settings.gameOptions.volume);
 }
 
 void Game::initReplay(const std::string& filename) {
@@ -1367,6 +1370,11 @@ void Game::runMainLoop() {
                 frameTime -= gamespeed;
             }
         }
+        if (skipped) {
+          currentGame->addToNewsTicker(strprintf(_("Skipped %d seconds"), skipped));
+          skipped = 0;
+        }
+         
 
         musicPlayer->musicCheck();	//if song has finished, start playing next one
     } while (!bQuitGame && !finishedLevel);//not sure if we need this extra bool
@@ -2195,6 +2203,7 @@ void Game::handleKeyInput(SDL_KeyboardEvent& keyboardEvent) {
             // skip a 10 seconds
             if(gameType != GAMETYPE_CUSTOM_MULTIPLAYER || bReplay) {
                 skipToGameCycle = gameCycleCount + (10*1000)/GAMESPEED_DEFAULT;
+                skipped = 10;
             }
         } break;
 
@@ -2202,6 +2211,7 @@ void Game::handleKeyInput(SDL_KeyboardEvent& keyboardEvent) {
             // skip a 30 seconds
             if(gameType != GAMETYPE_CUSTOM_MULTIPLAYER || bReplay) {
                 skipToGameCycle = gameCycleCount + (30*1000)/GAMESPEED_DEFAULT;
+                skipped = 30;
             }
         } break;
 
@@ -2209,6 +2219,7 @@ void Game::handleKeyInput(SDL_KeyboardEvent& keyboardEvent) {
             // skip 2 minutes
             if(gameType != GAMETYPE_CUSTOM_MULTIPLAYER || bReplay) {
                 skipToGameCycle = gameCycleCount + (120*1000)/GAMESPEED_DEFAULT;
+                skipped = 120;
             }
         } break;
 

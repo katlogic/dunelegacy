@@ -92,8 +92,8 @@ GameInitSettings::GameInitSettings(InputStream& stream) {
 	gameOptions.instantBuild = stream.readBool();
 	gameOptions.onlyOnePalace = stream.readBool();
 	gameOptions.rocketTurretsNeedPower = stream.readBool();
-	gameOptions.sandwormsRespawn = stream.readBool();
-	gameOptions.killedSandwormsDropSpice = stream.readBool();
+	gameOptions.sandwormsRespawn = true;stream.readBool();
+	gameOptions.killedSandwormsDropSpice = true;stream.readBool();
 
 
 	Uint32 numHouseInfo = stream.readUint32();

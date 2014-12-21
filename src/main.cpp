@@ -16,6 +16,7 @@
  */
 
 #include <main.h>
+#include <sand.h>
 
 #include <globals.h>
 
@@ -31,6 +32,7 @@
 #include <FileClasses/music/DirectoryPlayer.h>
 #include <FileClasses/music/ADLPlayer.h>
 #include <FileClasses/music/XMIPlayer.h>
+#include <GameInitSettings.h>
 
 #include <GUI/GUIStyle.h>
 #include <GUI/dune/DuneStyle.h>
@@ -329,6 +331,7 @@ std::string getUserLanguage() {
 
 
 int main(int argc, char *argv[]) {
+int quickload=0;
 	// init fnkdat
 	if(fnkdat(NULL, NULL, 0, FNKDAT_INIT) < 0) {
       perror("Could not initialize fnkdat");
@@ -340,6 +343,9 @@ int main(int argc, char *argv[]) {
 	    //check for overiding params
 	    std::string parameter(argv[i]);
 
+            if (parameter == "--quickload") {
+                quickload = 1;
+            } else
 		if(parameter == "--showlog") {
 		    // special parameter which does not overwrite settings
             bShowDebug = true;
@@ -609,6 +615,14 @@ int main(int argc, char *argv[]) {
 
             bFirstInit = false;
 
+            if (quickload) {
+		     char tmp[FILENAME_MAX];
+		    fnkdat("save/quicksave.dls", tmp, FILENAME_MAX, FNKDAT_USER | FNKDAT_CREAT);
+		    std::string savepath(tmp);
+		       try {
+			 startSinglePlayerGame(GameInitSettings(savepath));
+		       } catch (std::exception& e) {};
+            }
             fprintf(stdout, "starting main menu...");fflush(stdout);
             MainMenu * myMenu = new MainMenu();
             fprintf(stdout, "\t\tfinished\n"); fflush(stdout);

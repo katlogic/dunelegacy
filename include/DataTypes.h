@@ -19,6 +19,7 @@
 #define DATATYPES_H
 
 #include <Definitions.h>
+#include <SDL_mixer.h>
 
 // Libraries
 #include <SDL.h>
@@ -189,7 +190,7 @@ public:
 	class GameOptionsClass {
     public:
         GameOptionsClass()
-         : gameSpeed(GAMESPEED_DEFAULT),scrollSpeed(SCROLLSPEED_DEFAULT), concreteRequired(true), structuresDegradeOnConcrete(true), fogOfWar(false),
+         : gameSpeed(GAMESPEED_DEFAULT),scrollSpeed(SCROLLSPEED_DEFAULT), volume(MIX_MAX_VOLUME/2), concreteRequired(true), structuresDegradeOnConcrete(true), fogOfWar(false),
            startWithExploredMap(false), instantBuild(false), onlyOnePalace(false), rocketTurretsNeedPower(false),
            sandwormsRespawn(false), killedSandwormsDropSpice(false) {
         }
@@ -198,6 +199,7 @@ public:
         bool operator==(const GameOptionsClass& goc) const {
             return (gameSpeed == goc.gameSpeed)
                     && (scrollSpeed == goc.scrollSpeed)
+                    && (volume == goc.volume)
                     && (concreteRequired == goc.concreteRequired)
                     && (structuresDegradeOnConcrete == goc.structuresDegradeOnConcrete)
                     && (fogOfWar == goc.fogOfWar)
@@ -215,6 +217,7 @@ public:
 
         int         gameSpeed;
         int         scrollSpeed;
+        int         volume;
         bool		concreteRequired;
 		bool        structuresDegradeOnConcrete;
 		bool        fogOfWar;
@@ -252,6 +255,7 @@ public:
 
         gameOptions.gameSpeed = myINIFile.getIntValue("Game Options","Game Speed",GAMESPEED_DEFAULT);
         gameOptions.scrollSpeed = myINIFile.getIntValue("Game Options","Scroll Speed",SCROLLSPEED_DEFAULT);
+        gameOptions.volume = myINIFile.getIntValue("Game Options","Volume",MIX_MAX_VOLUME/2);
         gameOptions.concreteRequired = myINIFile.getBoolValue("Game Options","Concrete Required",true);
         gameOptions.structuresDegradeOnConcrete = myINIFile.getBoolValue("Game Options","Structures Degrade On Concrete",true);
         gameOptions.fogOfWar = myINIFile.getBoolValue("Game Options","Fog of War",false);
@@ -284,6 +288,7 @@ public:
 
         myINIFile.setIntValue("Game Options","Game Speed",gameOptions.gameSpeed);
         myINIFile.setIntValue("Game Options","Scroll Speed",gameOptions.scrollSpeed);
+        myINIFile.setIntValue("Game Options","volume",gameOptions.volume);
         myINIFile.setBoolValue("Game Options","Concrete Required",gameOptions.concreteRequired);
         myINIFile.setBoolValue("Game Options","Structures Degrade On Concrete",gameOptions.structuresDegradeOnConcrete);
         myINIFile.setBoolValue("Game Options","Fog of War",gameOptions.fogOfWar);

@@ -163,6 +163,7 @@ void InGameSettingsMenu::onOK() {
 
         // bleh
 	settings.gameOptions.scrollSpeed = scrollSpeed;
+	settings.gameOptions.volume = volume;
         settings.save(getConfigFilepath());
 
 	Window* pParentWindow = dynamic_cast<Window*>(getParent());

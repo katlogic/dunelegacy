@@ -547,6 +547,7 @@ private:
 	bool	bQuitGame;					///< Should the game be quited after this game tick
 	bool	bPause;						///< Is the game currently halted
 	bool    bMenu;                      ///< Is there currently a menu shown (options or mentat menu)
+        int skipped;
 	bool	bReplay;					///< Is this game actually a replay
 
 	bool	bShowFPS;					///< Show the FPS
