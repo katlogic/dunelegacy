@@ -616,6 +616,7 @@ int quickload=0;
             bFirstInit = false;
 
             if (quickload) {
+		quickload=0;
 		     char tmp[FILENAME_MAX];
 		    fnkdat("save/quicksave.dls", tmp, FILENAME_MAX, FNKDAT_USER | FNKDAT_CREAT);
 		    std::string savepath(tmp);
